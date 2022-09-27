@@ -3,7 +3,9 @@ package com.example.tictactoeekg;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -106,19 +108,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         player1Points++;
         Toast.makeText(this, "Player 1 wins!", Toast.LENGTH_SHORT).show();
         updatePointsText();
-        resetBoard();
+        delay();
     }
 
     private void player2Wins() {
         player2Points++;
         Toast.makeText(this, "Player 2 wins!", Toast.LENGTH_SHORT).show();
         updatePointsText();
-        resetBoard();
+        delay();
     }
 
     private void draw() {
         Toast.makeText(this, "Draw!", Toast.LENGTH_SHORT).show();
-        resetBoard();
+        delay();
     }
 
     private void updatePointsText() {
@@ -142,6 +144,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         player2Points = 0;
         updatePointsText();
         resetBoard();
+    }
+
+    private void delay() {
+        // delay in ms
+        int DELAY = 2000;
+
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                resetBoard();
+            }
+        }, DELAY);
     }
 
     @Override
