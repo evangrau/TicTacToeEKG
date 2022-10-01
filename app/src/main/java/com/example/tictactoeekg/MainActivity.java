@@ -3,17 +3,19 @@ package com.example.tictactoeekg;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private Button[][] buttons = new Button[3][3];
+    private final ImageButton[][] buttons = new ImageButton[3][3];
+    private Button[][] buttonsText = new Button[3][3];
     private boolean player1Turn = true;
     private int roundCount;
     private int player1Points, player2Points;
@@ -37,24 +39,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
 
         Button buttonReset = findViewById(R.id.button_reset);
-        buttonReset.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                resetGame();
-            }
-        });
+        buttonReset.setOnClickListener(view -> resetGame());
     }
 
     @Override
     public void onClick(View view) {
-        if (!((Button) view).getText().toString().equals("")) {
+        if (((ImageButton) view).getDrawable() != null) {
             return;
         }
 
         if (player1Turn) {
-            ((Button) view).setText("X");
+            ((ImageButton) view).setImageResource(R.drawable.impostor);
+//            ((Button) view)
         } else {
-            ((Button) view).setText("O");
+            ((ImageButton) view).setImageResource(R.drawable.crewmate);
         }
 
         roundCount++;
@@ -77,61 +75,57 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
-                field[i][j] = buttons[i][j].getText().toString();
+                field[i][j] = String.valueOf(buttonsText[i][j]);
             }
         }
 
         for (int i = 0; i < 3; i++) {
-            if (field[i][0].equals(field[i][1]) && field[i][0].equals(field[i][2]) && !field[i][0].equals("")) {
+            if (field[i][0].equals(field[i][1]) && field[i][0].equals(field[i][2]) && !field[i][0].equals("null")) {
                 return true;
             }
         }
 
         for (int i = 0; i < 3; i++) {
-            if (field[0][i].equals(field[1][i]) && field[0][i].equals(field[2][i]) && !field[0][i].equals("")) {
+            if (field[0][i].equals(field[1][i]) && field[0][i].equals(field[2][i]) && !field[0][i].equals("null")) {
                 return true;
             }
         }
 
-        if (field[0][0].equals(field[1][1]) && field[0][0].equals(field[2][2]) && !field[0][0].equals("")) {
+        if (field[0][0].equals(field[1][1]) && field[0][0].equals(field[2][2]) && !field[0][0].equals("null")) {
             return true;
         }
 
-        if (field[0][2].equals(field[1][1]) && field[0][2].equals(field[2][0]) && !field[0][2].equals("")) {
-            return true;
-        }
-
-        return false;
+        return field[0][2].equals(field[1][1]) && field[0][2].equals(field[2][0]) && !field[0][2].equals("null");
     }
 
     private void player1Wins() {
         player1Points++;
-        Toast.makeText(this, "Player 1 wins!", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "Impostors win!", Toast.LENGTH_SHORT).show();
         updatePointsText();
-        delay();
+        delayedReset();
     }
 
     private void player2Wins() {
         player2Points++;
-        Toast.makeText(this, "Player 2 wins!", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "Crewmates win!", Toast.LENGTH_SHORT).show();
         updatePointsText();
-        delay();
+        delayedReset();
     }
 
     private void draw() {
         Toast.makeText(this, "Draw!", Toast.LENGTH_SHORT).show();
-        delay();
+        delayedReset();
     }
 
     private void updatePointsText() {
-        textViewPlayer1.setText("Player 1: " + player1Points);
-        textViewPlayer2.setText("Player 2: " + player2Points);
+        textViewPlayer1.setText("Impostors: " + player1Points);
+        textViewPlayer2.setText("Crewmates: " + player2Points);
     }
 
     private void resetBoard() {
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
-                buttons[i][j].setText("");
+                buttons[i][j].setImageDrawable(null);
             }
         }
 
@@ -146,24 +140,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         resetBoard();
     }
 
-    private void delay() {
+    private void delayedReset() {
         // delay in ms
-        int DELAY = 2000;
+        int DELAY = 1000;
 
         Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                resetBoard();
-            }
-        }, DELAY);
+        handler.postDelayed(this::resetBoard, DELAY);
     }
 
     @Override
     protected void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
 
-        outState.putInt("rountCount", roundCount);
+        outState.putInt("roundCount", roundCount);
         outState.putInt("player1Points", player1Points);
         outState.putInt("player2Points", player2Points);
         outState.putBoolean("player1Turn", player1Turn);
@@ -173,7 +162,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     protected void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
 
-        roundCount = savedInstanceState.getInt("rountCount");
+        roundCount = savedInstanceState.getInt("roundCount");
         player1Points = savedInstanceState.getInt("player1Points");
         player2Points = savedInstanceState.getInt("player2Points");
         player1Turn = savedInstanceState.getBoolean("player1Turn");
