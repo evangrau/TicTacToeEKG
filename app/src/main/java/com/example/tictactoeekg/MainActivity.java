@@ -155,7 +155,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private void delayedReset() {
         // delay in ms
-        int DELAY = 7000;
+        int DELAY = 6000;
 
         Handler handler = new Handler();
         handler.postDelayed(this::resetBoard, DELAY);
