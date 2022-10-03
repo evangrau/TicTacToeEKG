@@ -3,23 +3,25 @@ package com.example.tictactoeekg;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
     private final ImageButton[][] buttons = new ImageButton[3][3];
-    private Button[][] buttonsText = new Button[3][3];
     private boolean player1Turn = true;
     private int roundCount;
     private int player1Points, player2Points;
     private TextView textViewPlayer1, textViewPlayer2;
+    private MediaPlayer impostor_win_sound, crewmate_win_sound, draw_sound;
+    private String impostor_id = String.valueOf(R.drawable.impostor);
+    private String crewmate_id = String.valueOf(R.drawable.crewmate);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,6 +30,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         textViewPlayer1 = findViewById(R.id.text_view_p1);
         textViewPlayer2 = findViewById(R.id.text_view_p2);
+        impostor_win_sound = MediaPlayer.create(this, R.raw.amongus_impostor);
+        crewmate_win_sound = MediaPlayer.create(this, R.raw.amongus_crewmate);
+        draw_sound = MediaPlayer.create(this, R.raw.amongus_draw);
 
         for (int i = 0; i < 3; i++) {
              for (int j = 0; j < 3; j++) {
@@ -50,7 +55,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         if (player1Turn) {
             ((ImageButton) view).setImageResource(R.drawable.impostor);
-//            ((Button) view)
         } else {
             ((ImageButton) view).setImageResource(R.drawable.crewmate);
         }
@@ -75,7 +79,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
-                field[i][j] = String.valueOf(buttonsText[i][j]);
+                field[i][j] = String.valueOf(buttons[i][j].getId());
             }
         }
 
@@ -101,6 +105,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private void player1Wins() {
         player1Points++;
         Toast.makeText(this, "Impostors win!", Toast.LENGTH_SHORT).show();
+        impostor_win_sound.start();
         updatePointsText();
         delayedReset();
     }
@@ -108,12 +113,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private void player2Wins() {
         player2Points++;
         Toast.makeText(this, "Crewmates win!", Toast.LENGTH_SHORT).show();
+        crewmate_win_sound.start();
         updatePointsText();
         delayedReset();
     }
 
     private void draw() {
         Toast.makeText(this, "Draw!", Toast.LENGTH_SHORT).show();
+        draw_sound.start();
         delayedReset();
     }
 
