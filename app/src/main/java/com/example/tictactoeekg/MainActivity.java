@@ -55,8 +55,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         if (player1Turn) {
             ((ImageButton) view).setImageResource(R.drawable.impostor);
+            ((ImageButton) view).setId(Integer.parseInt(impostor_id));
         } else {
             ((ImageButton) view).setImageResource(R.drawable.crewmate);
+            ((ImageButton) view).setId(Integer.parseInt(crewmate_id));
         }
 
         roundCount++;
@@ -132,7 +134,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private void resetBoard() {
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
+                String temp_id = "";
+                temp_id += i;
+                temp_id += j;
                 buttons[i][j].setImageDrawable(null);
+                buttons[i][j].setId(Integer.parseInt(temp_id));
             }
         }
 
@@ -149,7 +155,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private void delayedReset() {
         // delay in ms
-        int DELAY = 1000;
+        int DELAY = 7000;
 
         Handler handler = new Handler();
         handler.postDelayed(this::resetBoard, DELAY);

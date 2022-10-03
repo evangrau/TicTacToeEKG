@@ -6,9 +6,9 @@
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
-        android:icon="@drawable/tttappicon"
+        android:icon="@drawable/crewmate"
         android:label="@string/title"
-        android:roundIcon="@drawable/tttappicon"
+        android:roundIcon="@drawable/crewmate"
         android:supportsRtl="true"
         android:theme="@style/Theme.TicTacToeEKG"
         tools:targetApi="31">

@@ -4,7 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".MainActivity">
+    tools:context=".MainActivity"
+    android:background="@color/gray">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -15,8 +16,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Impostors: 0"
+            android:textStyle="italic"
+            android:fontFamily="sans-serif-condensed-medium"
             android:textSize="30sp"
-            android:freezesText="true"/>
+            android:freezesText="true"
+            android:textColor="@color/black"/>
 
         <TextView
             android:id="@+id/text_view_p2"
@@ -24,8 +28,11 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/text_view_p1"
             android:text="Crewmates: 0"
+            android:textStyle="italic"
+            android:fontFamily="sans-serif-condensed-medium"
             android:textSize="30sp"
-            android:freezesText="true"/>
+            android:freezesText="true"
+            android:textColor="@color/black"/>
 
         <Button
             android:id="@+id/button_reset"
@@ -34,7 +41,9 @@
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
             android:layout_marginEnd="33dp"
-            android:text="reset" />
+            android:text="reset"
+            android:textStyle="italic"
+            android:fontFamily="sans-serif-condensed-medium"/>
     </RelativeLayout>
 
     <LinearLayout
